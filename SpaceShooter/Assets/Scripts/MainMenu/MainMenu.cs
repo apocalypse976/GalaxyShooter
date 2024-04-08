@@ -13,7 +13,7 @@ public class MainMenu : MonoBehaviour
     }
     public void Co_Op()
     {
-        SceneManager.LoadScene(3);
+        SceneManager.LoadScene(2);
     }
     public void Settings()
     {

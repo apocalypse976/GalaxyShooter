@@ -20,7 +20,7 @@ public class LoadingScreen : MonoBehaviour
      if (Application.internetReachability != NetworkReachability.NotReachable)
       {
             _loadingText.text = "Cheking For Internet.......";
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(3);
        }
        else
         {
