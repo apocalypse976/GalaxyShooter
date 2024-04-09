@@ -12,6 +12,8 @@ TagManager:
   - SpeedBoost
   - SheildPowerUps
   - Enemy_laser
+  - SpawnManager
+  - PlayerLaser
   layers:
   - Default
   - TransparentFX

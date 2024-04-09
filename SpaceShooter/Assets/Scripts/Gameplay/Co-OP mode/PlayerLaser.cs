@@ -1,28 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Laser : MonoBehaviour
+public class PlayerLaser : NetworkBehaviour
 {
     [SerializeField] private float _speed;
-  
 
-   
-
-    void Update()
-    { 
-       MoveUp();
-        destroyLaser();
+    private void Update()
+    {
+       
+        MoveUp();
+        DestroyLaserServerRpc();
     }
-  
     void MoveUp()
     {
-
-        transform.Translate(Time.deltaTime * Vector3.up * _speed);
+        transform.Translate(Vector3.up * _speed * Time.deltaTime);
     }
-
-    void destroyLaser()
+    [ServerRpc]
+    void DestroyLaserServerRpc()
     {
+        
         if (transform.position.y > 11f)
         {
             if (transform.parent != null)
@@ -34,7 +32,7 @@ public class Laser : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+        
     }
-
-
+     
 }
