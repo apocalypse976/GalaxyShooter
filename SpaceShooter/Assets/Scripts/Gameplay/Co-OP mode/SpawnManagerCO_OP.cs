@@ -56,13 +56,14 @@ public class SpawnManagerCO_OP : NetworkBehaviour
     {
         while(NetworkManager.Singleton.ConnectedClients.Count>0)
         {
-            yield return new WaitForSeconds(Random.Range(5,15));
+           
             for(int i=0;i<_powerUps.Length;i++)
             {
                 if (NetworkObjectPool.Singleton.GetCurrentPrefabs(_powerUps[i]) < MaxprefabCount)
                 {
                     if (NetworkManager.Singleton.ConnectedClients.Count > 1)
                     {
+                        yield return new WaitForSeconds(Random.Range(5, 15));
                         SpawnPowerUps();
                     }
                 }

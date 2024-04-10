@@ -71,6 +71,8 @@ MonoBehaviour:
     PrewarmCount: 30
   - Prefab: {fileID: 3105874753790396672, guid: fe800b143df89c54694165d717dc8c3a, type: 3}
     PrewarmCount: 30
+  - Prefab: {fileID: 7246065618000114876, guid: 9a736453ac89e2343b545acadccc1535, type: 3}
+    PrewarmCount: 30
 --- !u!114 &7258801128050913899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -86,3 +88,4 @@ MonoBehaviour:
   _enemyprefab: {fileID: 345282388978472510, guid: 56bc9777a9c682c489a7c3adca8bed7e, type: 3}
   _powerUps:
   - {fileID: 3105874753790396672, guid: fe800b143df89c54694165d717dc8c3a, type: 3}
+  - {fileID: 7246065618000114876, guid: 9a736453ac89e2343b545acadccc1535, type: 3}

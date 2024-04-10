@@ -31,6 +31,8 @@ public class CO_OP_player : NetworkBehaviour
 
     //Player PowerUps
     private bool _tripleShotActive=false;
+    private bool _speedBoost = false;
+    private float _speedMultiplier=2f;
 
     void Update()
     {
@@ -52,9 +54,18 @@ public class CO_OP_player : NetworkBehaviour
     {
         horizontalInput = playerInput.x;
         verticalInput = playerInput.y;
-        float horizontalMovement = _speed * Time.deltaTime * horizontalInput;
-        float verticalMovement = _speed * Time.deltaTime * verticalInput;
-        transform.Translate(horizontalMovement, verticalMovement, 0);
+        float horizontalMovement = _speed * Time.deltaTime* horizontalInput;
+        float verticalMovement = _speed * Time.deltaTime* verticalInput;
+        if (_speedBoost)
+        { 
+            transform.Translate(horizontalMovement * _speedMultiplier , verticalMovement * _speedMultiplier , 0);
+            Invoke("DisableSpeedBoost", 5f);
+        }
+        else if (!_speedBoost)
+        {
+            transform.Translate(horizontalMovement, verticalMovement, 0);
+        }
+      
     }
     void playerBounds()
     {
@@ -121,10 +132,19 @@ public class CO_OP_player : NetworkBehaviour
              Destroy(collision.gameObject);
             _tripleShotActive = true;
         }
+        else if (collision.tag == "SpeedBoost")
+        {
+            Destroy(collision.gameObject);
+            _speedBoost = true;
+        }
     }
     private void DisableTripleShot()
     {
         _tripleShotActive = false;
+    }
+    private void DisableSpeedBoost()
+    {
+        _speedBoost = false;
     }
     #endregion
 }
