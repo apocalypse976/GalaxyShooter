@@ -1,38 +1,74 @@
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
+using Unity.BossRoom.Infrastructure;
 
 public class SpawnManagerCO_OP : NetworkBehaviour
 {
-    [Header("Prefabs")]
-    [SerializeField] private NetworkObject _enemyPrefab;
+    [SerializeField] private GameObject _enemyprefab;
+    [SerializeField] private GameObject[] _powerUps;
+    private const int MaxprefabCount = 30;
 
-    public override void OnNetworkSpawn()
+    private void Start()
     {
-        base.OnNetworkSpawn();
-        if (!IsOwner) return;
-        StartRoutinServerRpc();
+        NetworkManager.Singleton.OnClientStarted += StartSpawnning;
     }
-    private void Update()
+    void StartSpawnning()
     {
-       
-    }
-    [ServerRpc]
-    public void StartRoutinServerRpc()
-    {
+        NetworkManager.Singleton.OnClientStarted -= StartSpawnning;
+        NetworkObjectPool.Singleton.InitializePool();
+      
+        StartCoroutine(StartEnemySpawnRoutine());
+        StartCoroutine(StartPowerUpsSpawnRoutine());
         
-        StartCoroutine(EnemySpawnRoutine());
     }
-
-    IEnumerator EnemySpawnRoutine()
+    void SpawnEnemy()
     {
-       
-        while (true)
+        Vector3 Pos = new Vector3(Random.Range(-7, 7), 7.5f, 0);
+        NetworkObject obj = NetworkObjectPool.Singleton.GetNetworkObject(_enemyprefab, Pos,Quaternion.identity);
+       obj. GetComponent<enemy>().Prefab= _enemyprefab;
+        if(!obj.IsSpawned)
+        obj.Spawn(true);
+    }
+    void SpawnPowerUps()
+    {
+        Vector3 Pos = new Vector3(Random.Range(-7, 7), 7.5f, 0);
+        int powerUpsId = Random.Range(0,_powerUps.Length);
+        NetworkObject obj = NetworkObjectPool.Singleton.GetNetworkObject(_powerUps[powerUpsId], Pos, Quaternion.identity);
+        if (!obj.IsSpawned)
+            obj.Spawn(true);
+
+    }
+  IEnumerator StartEnemySpawnRoutine()
+  {
+        while(NetworkManager.Singleton.ConnectedClients.Count > 0)
         {
-            int spawnPos = Random.Range(-7,7);
-           NetworkObject _enemyPrefabInstance= Instantiate(_enemyPrefab, new Vector3(spawnPos, 7, 0), Quaternion.identity);
-            _enemyPrefabInstance.SpawnWithOwnership(OwnerClientId);
-            yield return new WaitForSeconds(Random.Range(2,5));
+            yield return new WaitForSeconds(2);
+            if (NetworkObjectPool.Singleton.GetCurrentPrefabs(_enemyprefab)< MaxprefabCount)
+                if (NetworkManager.Singleton.ConnectedClients.Count > 1)
+                { 
+                    SpawnEnemy();
+                }
+
+        }
+  }
+    IEnumerator StartPowerUpsSpawnRoutine()
+    {
+        while(NetworkManager.Singleton.ConnectedClients.Count>0)
+        {
+            yield return new WaitForSeconds(Random.Range(5,15));
+            for(int i=0;i<_powerUps.Length;i++)
+            {
+                if (NetworkObjectPool.Singleton.GetCurrentPrefabs(_powerUps[i]) < MaxprefabCount)
+                {
+                    if (NetworkManager.Singleton.ConnectedClients.Count > 1)
+                    {
+                        SpawnPowerUps();
+                    }
+                }
+
+            }
+           
         }
     }
 }

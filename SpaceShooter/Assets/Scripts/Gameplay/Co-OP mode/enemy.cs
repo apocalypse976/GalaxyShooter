@@ -1,10 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
 public class enemy : NetworkBehaviour
 {
+    public GameObject Prefab;
     [SerializeField] private float _speed=10f;
     [SerializeField] private NetworkObject _laserPrefab;
     private float _firerate = 2f;
@@ -13,8 +13,9 @@ public class enemy : NetworkBehaviour
     private void Update()
     {
         EnemyMove();
+        if (!IsOwner) return;
         EnemyFireServerRpc();
-        DestroyEnemy();
+        DestroyEnemyServerRpc();
     }
 
     void EnemyMove()
@@ -41,11 +42,25 @@ public class enemy : NetworkBehaviour
         }
      
     }
-    void DestroyEnemy()
+    [ServerRpc]
+    void DestroyEnemyServerRpc()
     {
+       
         if (transform.position.y < -6.5f)
         {
-            Destroy(gameObject);
+           
+            NetworkObject.Despawn();
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Player")
+        {
+            NetworkObject.Despawn();
+        }
+        if (collision.tag == "PlayerLaser")
+        {
+            NetworkObject.Despawn();
         }
     }
 

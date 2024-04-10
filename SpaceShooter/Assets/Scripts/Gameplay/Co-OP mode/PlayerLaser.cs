@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -11,6 +9,7 @@ public class PlayerLaser : NetworkBehaviour
     {
        
         MoveUp();
+        if (!IsOwner) return;
         DestroyLaserServerRpc();
     }
     void MoveUp()

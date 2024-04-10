@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerUps : MonoBehaviour
+public class PowerUpsCo_op : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private float _minX,_maxX;

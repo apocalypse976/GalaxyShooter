@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
-using UnityEditor.AnimatedValues;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,12 +16,21 @@ public class CO_OP_player : NetworkBehaviour
     [Header("Laser")]
     [SerializeField] private NetworkObject _laserPrefab;
 
+    [Header("Health")]
+    [SerializeField] private int _health=3;
+
+    [Header("PowerUps Prefab")]
+    [SerializeField] private NetworkObject _tripleShotPrefab;
+    
     //Player Movements Vector
     private Vector2 playerInput;
     private float horizontalInput;
     private float verticalInput;
     private float _firerate=0.5f;
     private float _canfire=0;
+
+    //Player PowerUps
+    private bool _tripleShotActive=false;
 
     void Update()
     {
@@ -35,6 +41,7 @@ public class CO_OP_player : NetworkBehaviour
         {
             SpawnLaserServerRpc();
         }
+           
     }
     #region Move
     public void Move(InputAction.CallbackContext context)
@@ -70,13 +77,54 @@ public class CO_OP_player : NetworkBehaviour
     {
         if (Time.time > _canfire)
         {
-            _canfire = Time.time + _firerate;
-            Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y + 1.2f, transform.position.z);
-            NetworkObject laserInstance = Instantiate(_laserPrefab,spawnPos, Quaternion.identity);
-            laserInstance.SpawnWithOwnership(OwnerClientId);
+            if (!_tripleShotActive)
+            {
+                _canfire = Time.time + _firerate;
+                Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y + 1.2f, transform.position.z);
+                NetworkObject laserInstance = Instantiate(_laserPrefab, spawnPos, Quaternion.identity);
+                laserInstance.SpawnWithOwnership(OwnerClientId);
+            }
+            else if (_tripleShotActive)
+            {
+                _canfire = Time.time + _firerate;
+                Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y + 1.2f, transform.position.z);
+                NetworkObject _tripleShotInstance = Instantiate(_tripleShotPrefab, spawnPos, Quaternion.identity);
+                _tripleShotInstance.SpawnWithOwnership(OwnerClientId);
+                Invoke("DisableTripleShot", 5f);
+            }
+         
         }
      
     }
 
+    #endregion
+    #region Health
+    public void health()
+    {
+        _health -= 1;
+      if(_health==0)
+      {
+         NetworkObject.Despawn();
+      }
+    }
+
+    #endregion
+    #region Triggers and PowerUps
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag== "Enemy" || collision.tag == "Enemy_laser")
+        {
+            health();
+        }
+       else if (collision.tag == "TripleShot")
+       {
+             Destroy(collision.gameObject);
+            _tripleShotActive = true;
+        }
+    }
+    private void DisableTripleShot()
+    {
+        _tripleShotActive = false;
+    }
     #endregion
 }
