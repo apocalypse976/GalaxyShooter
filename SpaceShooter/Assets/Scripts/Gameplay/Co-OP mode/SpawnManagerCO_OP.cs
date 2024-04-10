@@ -9,15 +9,10 @@ public class SpawnManagerCO_OP : NetworkBehaviour
     [SerializeField] private GameObject[] _powerUps;
     private const int MaxprefabCount = 30;
 
-    private void Start()
+    
+    public void StartSpawnning()
     {
-        NetworkManager.Singleton.OnClientStarted += StartSpawnning;
-    }
-    void StartSpawnning()
-    {
-        NetworkManager.Singleton.OnClientStarted -= StartSpawnning;
         NetworkObjectPool.Singleton.InitializePool();
-      
         StartCoroutine(StartEnemySpawnRoutine());
         StartCoroutine(StartPowerUpsSpawnRoutine());
         
@@ -41,14 +36,14 @@ public class SpawnManagerCO_OP : NetworkBehaviour
     }
   IEnumerator StartEnemySpawnRoutine()
   {
-        while(NetworkManager.Singleton.ConnectedClients.Count > 0)
+        while (NetworkManager.Singleton.ConnectedClients.Count > 0)
         {
             yield return new WaitForSeconds(2);
-            if (NetworkObjectPool.Singleton.GetCurrentPrefabs(_enemyprefab)< MaxprefabCount)
-                if (NetworkManager.Singleton.ConnectedClients.Count > 1)
-                { 
-                    SpawnEnemy();
-                }
+
+            if (NetworkManager.Singleton.ConnectedClients.Count > 1)
+            {
+                SpawnEnemy();
+            }
 
         }
   }
@@ -56,20 +51,16 @@ public class SpawnManagerCO_OP : NetworkBehaviour
     {
         while(NetworkManager.Singleton.ConnectedClients.Count>0)
         {
-           
-            for(int i=0;i<_powerUps.Length;i++)
+            yield return new WaitForSeconds(Random.Range(5, 15));
+            
+            if (NetworkManager.Singleton.ConnectedClients.Count > 1)
             {
-                if (NetworkObjectPool.Singleton.GetCurrentPrefabs(_powerUps[i]) < MaxprefabCount)
-                {
-                    if (NetworkManager.Singleton.ConnectedClients.Count > 1)
-                    {
-                        yield return new WaitForSeconds(Random.Range(5, 15));
-                        SpawnPowerUps();
-                    }
-                }
-
+              SpawnPowerUps();
             }
+
+            
            
         }
     }
+    
 }

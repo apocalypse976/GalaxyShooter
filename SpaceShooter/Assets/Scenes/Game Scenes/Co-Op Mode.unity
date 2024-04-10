@@ -693,6 +693,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6179638987896694016, guid: 70644cadf5608c140979c5e30eb0efa0, type: 3}
+      propertyPath: PooledPrefabsList.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6179638987896694016, guid: 70644cadf5608c140979c5e30eb0efa0, type: 3}
+      propertyPath: PooledPrefabsList.Array.data[3].Prefab
+      value: 
+      objectReference: {fileID: 7246065618000114876, guid: 9a736453ac89e2343b545acadccc1535, type: 3}
+    - target: {fileID: 6179638987896694016, guid: 70644cadf5608c140979c5e30eb0efa0, type: 3}
+      propertyPath: PooledPrefabsList.Array.data[3].PrewarmCount
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7850675906691081840, guid: 70644cadf5608c140979c5e30eb0efa0, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1451957270
@@ -700,6 +712,10 @@ PrefabInstance:
     - target: {fileID: 8754484241195416377, guid: 70644cadf5608c140979c5e30eb0efa0, type: 3}
       propertyPath: m_Name
       value: PoolManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 8754484241195416377, guid: 70644cadf5608c140979c5e30eb0efa0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8873134972574979020, guid: 70644cadf5608c140979c5e30eb0efa0, type: 3}
       propertyPath: m_LocalPosition.x
