@@ -1,4 +1,5 @@
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,7 +21,6 @@ public class CO_OP_player : NetworkBehaviour
     [SerializeField] private int _health=3;
 
     [Header("PowerUps Prefab")]
-    [SerializeField] private NetworkObject _tripleShotPrefab;
     [SerializeField] private GameObject _sheildPrefab;
     
     //Player Movements Vector
@@ -100,9 +100,18 @@ public class CO_OP_player : NetworkBehaviour
             else if (_tripleShotActive)
             {
                 _canfire = Time.time + _firerate;
-                Vector3 spawnPos = new Vector3(transform.position.x, transform.position.y + 1.2f, transform.position.z);
-                NetworkObject _tripleShotInstance = Instantiate(_tripleShotPrefab, spawnPos, Quaternion.identity);
+                //Up Laser
+                Vector3 spawnPos1 = new Vector3(transform.position.x, transform.position.y + 1.8f, transform.position.z);
+                NetworkObject _tripleShotInstance = Instantiate(_laserPrefab, spawnPos1, Quaternion.identity);
                 _tripleShotInstance.SpawnWithOwnership(OwnerClientId);
+                //Right Laser
+                Vector3 spawnPos2 = new Vector3(transform.position.x-0.8f, transform.position.y, transform.position.z);
+                NetworkObject _tripleShotInstance1 = Instantiate(_laserPrefab, spawnPos2, Quaternion.identity);
+                _tripleShotInstance1.SpawnWithOwnership(OwnerClientId);
+                //Left Laser
+                Vector3 spawnPos3 = new Vector3(transform.position.x+0.8f, transform.position.y, transform.position.z);
+                NetworkObject _tripleShotInstance3 = Instantiate(_laserPrefab, spawnPos3, Quaternion.identity);
+                _tripleShotInstance3.SpawnWithOwnership(OwnerClientId);
                 Invoke("DisableTripleShot", 5f);
             }
          
@@ -138,6 +147,7 @@ public class CO_OP_player : NetworkBehaviour
             health();
             if (_isSheildBoost)
             {
+                if (!IsOwner) return;
                 DisableSheildServerRpc();
             }
         }
@@ -153,6 +163,7 @@ public class CO_OP_player : NetworkBehaviour
         }
         else if (collision.tag == "SheildPowerUps")
         {
+            if (!IsOwner) return;
             EnebleSheildServerRpc();
             Destroy(collision.gameObject);
         }
@@ -168,8 +179,10 @@ public class CO_OP_player : NetworkBehaviour
     [ServerRpc]
     void EnebleSheildServerRpc()
     {
-        _isSheildBoost = true;
+       
+     _isSheildBoost = true;
         _sheildPrefab.SetActive(true);
+       
     }
     [ServerRpc]
     void DisableSheildServerRpc()

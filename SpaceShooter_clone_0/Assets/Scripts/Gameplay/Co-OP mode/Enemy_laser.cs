@@ -8,15 +8,13 @@ public class Enemy_laser : NetworkBehaviour
     private void Update()
     {
         moveDown();
-        if (!IsOwner) return;
-        destroyLaserServerRpc();
+        destroyLaser();
     }
     void moveDown()
     {
         transform.Translate(Vector3.down * Time.deltaTime * _speed);
     }
-    [ServerRpc]
-    void destroyLaserServerRpc()
+    void destroyLaser()
     {
         if (transform.position.y < -11f)
         {

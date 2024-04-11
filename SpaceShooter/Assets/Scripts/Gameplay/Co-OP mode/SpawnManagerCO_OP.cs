@@ -12,7 +12,7 @@ public class SpawnManagerCO_OP : NetworkBehaviour
 
 
     private void Start()
-    {
+    { 
         NetworkManager.Singleton.OnClientStarted += StartSpawnning;
     }
     public void StartSpawnning()
@@ -61,14 +61,9 @@ public class SpawnManagerCO_OP : NetworkBehaviour
         while(NetworkManager.Singleton.ConnectedClients.Count>0)
         {
             yield return new WaitForSeconds(Random.Range(5, 15));
-           
-          
+        
             SpawnPowerUps();
-          
-                 
-
             
-           
         }
     }
     

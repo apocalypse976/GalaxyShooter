@@ -10,6 +10,7 @@ public class PowerUpsCoOp : NetworkBehaviour
     private void Update()
     {
         Move();
+        if (!IsOwner) return;
         destroyGameObjServerRpc();
     }
     private void Move()

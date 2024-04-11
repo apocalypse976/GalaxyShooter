@@ -15,7 +15,7 @@ public class enemy : NetworkBehaviour
         EnemyMove();
         if (!IsOwner) return;
         EnemyFireServerRpc();
-        DestroyEnemyServerRpc();
+        DestroyEnemy();
     }
 
     void EnemyMove()
@@ -42,25 +42,34 @@ public class enemy : NetworkBehaviour
         }
      
     }
-    [ServerRpc]
-    void DestroyEnemyServerRpc()
+   
+    void DestroyEnemy()
     {
        
         if (transform.position.y < -6.5f)
         {
-           
-            NetworkObject.Despawn();
+            if (!IsOwner) return;
+            destroyEnemyServerRpc();
+
+
         }
+    }
+    [ServerRpc]
+    void destroyEnemyServerRpc()
+    {
+        NetworkObject.Despawn();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
-            NetworkObject.Despawn();
+            if (!IsOwner) return;
+            destroyEnemyServerRpc();
         }
         if (collision.tag == "PlayerLaser")
         {
-            NetworkObject.Despawn();
+            if (!IsOwner) return;
+            destroyEnemyServerRpc();
         }
     }
 
