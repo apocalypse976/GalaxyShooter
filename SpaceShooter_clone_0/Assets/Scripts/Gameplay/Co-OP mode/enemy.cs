@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class enemy : NetworkBehaviour
 {
-    public GameObject Prefab;
+    [HideInInspector] public GameObject Prefab;
     [SerializeField] private float _speed=10f;
     [SerializeField] private NetworkObject _laserPrefab;
     private float _firerate = 2f;

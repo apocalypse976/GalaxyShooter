@@ -36,7 +36,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3886233636602052676}
-  - {fileID: 6447498990728221688}
+  - {fileID: 8278931365292885148}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1568827727704105555
@@ -103,7 +103,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3668378179
+  GlobalObjectIdHash: 14378092
+  InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -123,15 +124,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df2868252ab5c4d1da357e8f11f1b524, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseUnreliableDeltas: 0
   SyncPositionX: 1
   SyncPositionY: 1
-  SyncPositionZ: 1
-  SyncRotAngleX: 1
-  SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
+  SyncPositionZ: 0
+  SyncRotAngleX: 0
+  SyncRotAngleY: 0
+  SyncRotAngleZ: 0
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
   PositionThreshold: 0.001
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
@@ -252,7 +254,7 @@ MonoBehaviour:
   _laserPrefab: {fileID: 6341656545451342591, guid: 39570f917df740546b82939033436cfb, type: 3}
   _health: 3
   _tripleShotPrefab: {fileID: 6499529577269911761, guid: 314328e8e070dea4fac0f8f59471f572, type: 3}
-  _sheildPrefab: {fileID: -1785213339389993212, guid: def6879e4485154478df35f5cd626260, type: 3}
+  _sheildPrefab: {fileID: 7751364855963674154}
 --- !u!1001 &2366290571479891154
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -342,7 +344,7 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 8165874072329767396, guid: c95916ba0a9a33046b0a094e18926dc7, type: 3}
   m_PrefabInstance: {fileID: 2366290571479891154}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &7604514191983521157
+--- !u!1001 &4762023620007230177
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -396,15 +398,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5211300939527043298, guid: def6879e4485154478df35f5cd626260, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 507250952
+      value: 14378092
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: def6879e4485154478df35f5cd626260, type: 3}
---- !u!4 &6447498990728221688 stripped
+--- !u!1 &7751364855963674154 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2991650210459262155, guid: def6879e4485154478df35f5cd626260, type: 3}
+  m_PrefabInstance: {fileID: 4762023620007230177}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8278931365292885148 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3527083175728889469, guid: def6879e4485154478df35f5cd626260, type: 3}
-  m_PrefabInstance: {fileID: 7604514191983521157}
+  m_PrefabInstance: {fileID: 4762023620007230177}
   m_PrefabAsset: {fileID: 0}

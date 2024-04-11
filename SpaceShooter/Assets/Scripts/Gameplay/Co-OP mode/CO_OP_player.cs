@@ -21,7 +21,7 @@ public class CO_OP_player : NetworkBehaviour
 
     [Header("PowerUps Prefab")]
     [SerializeField] private NetworkObject _tripleShotPrefab;
-    [SerializeField] private NetworkObject _sheildPrefab;
+    [SerializeField] private GameObject _sheildPrefab;
     
     //Player Movements Vector
     private Vector2 playerInput;
@@ -136,7 +136,10 @@ public class CO_OP_player : NetworkBehaviour
         if(collision.tag== "Enemy" || collision.tag == "Enemy_laser")
         {
             health();
-            DisableSheild();
+            if (_isSheildBoost)
+            {
+                DisableSheildServerRpc();
+            }
         }
        else if (collision.tag == "TripleShot")
        {
@@ -150,8 +153,7 @@ public class CO_OP_player : NetworkBehaviour
         }
         else if (collision.tag == "SheildPowerUps")
         {
-           _isSheildBoost = true;
-            _sheildPrefab.NetworkObject.Spawn(true);
+            EnebleSheildServerRpc();
             Destroy(collision.gameObject);
         }
     }
@@ -163,10 +165,17 @@ public class CO_OP_player : NetworkBehaviour
     {
         _speedBoost = false;
     }
-    void DisableSheild()
+    [ServerRpc]
+    void EnebleSheildServerRpc()
+    {
+        _isSheildBoost = true;
+        _sheildPrefab.SetActive(true);
+    }
+    [ServerRpc]
+    void DisableSheildServerRpc()
     {
         _isSheildBoost = false;
-        _sheildPrefab.NetworkObject.Spawn(false);
+        _sheildPrefab.SetActive(false);
     }
     #endregion
 }
