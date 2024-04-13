@@ -2,6 +2,7 @@ using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class CO_OP_player : NetworkBehaviour
 {
@@ -41,7 +42,11 @@ public class CO_OP_player : NetworkBehaviour
         if (!IsOwner) return;
         Movement();
         playerBounds();
-           
+        if (Input.GetMouseButtonDown(0))
+        {
+            SpawnLaserServerRpc();
+        }
+
     }
     #region Move
     public void Move(InputAction.CallbackContext context)
@@ -80,7 +85,11 @@ public class CO_OP_player : NetworkBehaviour
     }
     #endregion
     #region Laser
-
+    public void ShootLaser()
+    {
+        if (!IsOwner) return;
+        SpawnLaserServerRpc();
+    }
     [ServerRpc]
     public void SpawnLaserServerRpc()
     {

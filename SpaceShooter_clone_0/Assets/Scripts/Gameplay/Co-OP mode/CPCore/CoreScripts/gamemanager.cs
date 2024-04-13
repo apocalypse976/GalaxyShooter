@@ -1,20 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.Netcode;
 using UnityEngine;
 
-public class gamemanager : MonoBehaviour
+public class gamemanager : NetworkBehaviour
 {
     [SerializeField] private GameObject _joyStick;
     [SerializeField] private GameObject _shootButton;
     [SerializeField] private GameObject _serverButton;
-    private bool _isConsole;
+   [SerializeField] private bool _isConsole;
     public static gamemanager Singleton;
     private CO_OP_player _player;
 
     private void Start()
     {
-       _serverButton.gameObject.SetActive(true);
+        _serverButton.gameObject.SetActive(true);
         _joyStick.gameObject.SetActive(false);
         _shootButton.gameObject.SetActive(false);
         if (Singleton = null)
@@ -28,16 +29,9 @@ public class gamemanager : MonoBehaviour
     }
     private void Update()
     { 
-        if (_isConsole)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                _player.SpawnLaserServerRpc();
-            }
-        }
        
     }
-    #region Host & Join
+    #region Buttons
     public void HostButton()
     {
         try
@@ -69,6 +63,7 @@ public class gamemanager : MonoBehaviour
         }
        
     }
+    
     #endregion
 
     #region Device Detect
@@ -89,5 +84,6 @@ public class gamemanager : MonoBehaviour
         }
     }
     #endregion
-    
+
+   
 }

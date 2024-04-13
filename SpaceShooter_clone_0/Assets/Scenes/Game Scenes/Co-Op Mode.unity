@@ -393,6 +393,7 @@ MonoBehaviour:
   _joyStick: {fileID: 1039019680}
   _shootButton: {fileID: 1510311872}
   _serverButton: {fileID: 981467491}
+  _isConsole: 0
 --- !u!4 &252164658
 Transform:
   m_ObjectHideFlags: 0
@@ -1479,7 +1480,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1036038406897565780, guid: a9e6aa7879ad6d9468bea0513967db1d, type: 3}
         m_TargetAssemblyTypeName: CO_OP_player, Assembly-CSharp
-        m_MethodName: SpawnLaserServerRpc
+        m_MethodName: ShootLaser
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

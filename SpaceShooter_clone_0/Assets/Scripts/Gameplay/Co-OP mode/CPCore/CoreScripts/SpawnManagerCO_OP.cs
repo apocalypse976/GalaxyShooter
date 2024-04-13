@@ -42,7 +42,7 @@ public class SpawnManagerCO_OP : NetworkBehaviour
     }
   IEnumerator StartEnemySpawnRoutine()
   {
-        while (NetworkManager.Singleton.ConnectedClients.Count > 0)
+        while (NetworkManager.Singleton.ConnectedClients.Count> 0)
         {
             yield return new WaitForSeconds(2);
             if (NetworkObjectPool.Singleton.GetCurrentPrefabs(_enemyprefab) < MaxprefabCount)
