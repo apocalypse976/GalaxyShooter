@@ -7,14 +7,17 @@ using UnityEngine.UI;
 
 public class VolumeManager : MonoBehaviour
 {
-    
+    [Header("BackGround Music")]
     [SerializeField] private Slider _musicvol;
     [SerializeField] private string _musicKey;
+    [Header("Sound")]
+    [SerializeField] private Slider _soundvol;
+    [SerializeField] private string _soundKey;
     private AudioSource _music;
 
     private void Start()
     {
-     _music= GetComponent<AudioSource>();
+     _music=GameObject.Find("Music"). GetComponent<AudioSource>();
         if (!PlayerPrefs.HasKey(_musicKey))
         {
             PlayerPrefs.GetFloat(_musicKey, 1);
@@ -23,6 +26,15 @@ public class VolumeManager : MonoBehaviour
         else
         {
             Load();
+        }
+        if (!PlayerPrefs.HasKey(_soundKey))
+        {
+            PlayerPrefs.GetFloat(_soundKey, 1);
+            LoadVol();
+        }
+        else
+        {
+            LoadVol();
         }
     }
     public void MusicChange()
@@ -37,5 +49,18 @@ public class VolumeManager : MonoBehaviour
     private void Save()
     {
         PlayerPrefs.SetFloat(_musicKey,_musicvol.value);
+    }
+    public void SoundChange()
+    {
+        SoundManager.instance. _soundSource.volume = _soundvol.value;
+        Savevol();
+    }
+    private void Savevol()
+    {
+        PlayerPrefs.SetFloat(_soundKey, _soundvol.value);
+    }
+    private void LoadVol()
+    {
+        _soundvol.value = PlayerPrefs.GetFloat(_soundKey, 1);
     }
 }
