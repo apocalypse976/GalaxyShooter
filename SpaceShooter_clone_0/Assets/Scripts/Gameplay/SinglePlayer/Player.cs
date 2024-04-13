@@ -1,11 +1,9 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Unity.Netcode;
 
-public class Player : NetworkBehaviour
+public class Player : MonoBehaviour
 {
     [Header("Player Movement")]
     [SerializeField] private float _normalspeed;
@@ -21,12 +19,12 @@ public class Player : NetworkBehaviour
     [SerializeField] private GameObject _sheildPrefab;
     [SerializeField] private GameObject _laserPrefab;
     [SerializeField] private GameObject _tripleshotPrefab;
-    [SerializeField] private GameObject[] _thrustersPrefabs;
+    [SerializeField] private GameObject _thrusterPrefab;
+    [SerializeField] private GameObject[] _enginePrefabs;
 
     [Header("Audio")]
     [SerializeField] private AudioClip _laserClip;
 
-    private GameManager _gameManager;
     private UIManager _uiManager;
     private bool _isSheildActive;
     private bool _tripleShotActive;
@@ -35,23 +33,23 @@ public class Player : NetworkBehaviour
     private float _horizontalMovement;
     private float _verticalMovement;
     private bool _speedBoostActive;
-    private int _score;
+    private Animator _anim;
+ 
 
 
     void Start()
     {
-
+        _thrusterPrefab.SetActive(true);
         try
         {
             _uiManager = GameObject.Find("UI_Manager").GetComponent<UIManager>();
-            _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-
+            _anim= GetComponent<Animator>();
         }
         catch
         {
             Debug.LogError("UI Manager or Game Manager not Found.");
         }
-        if (!_gameManager.IsCoOpMode)
+        if (!GameManager.Singleton.IsCoOpMode)
         {
             transform.position = Vector3.zero;
         }
@@ -63,10 +61,8 @@ public class Player : NetworkBehaviour
     {
       
         movement();
-       playerBound();
-      
-
-
+        playerBound();
+        Animations();
     }
    
     #region Movements
@@ -76,9 +72,6 @@ public class Player : NetworkBehaviour
     }
     void movement()
     {
-        if (IsOwner) Debug.Log("Is owner");
-        // _horizontalMovement = Input.GetAxis("Horizontal");
-        //_verticalMovement = Input.GetAxis("Vertical");
         _horizontalMovement =_playerMovement.x;
         _verticalMovement = _playerMovement.y;
        
@@ -106,6 +99,27 @@ public class Player : NetworkBehaviour
     }
     #endregion
 
+    #region Animations
+    void Animations()
+    {
+        if (_horizontalMovement > 0)
+        {
+            _anim.SetBool("MoveRight", true);
+            _anim.SetBool("MoveLeft", false);
+        }
+        else if (_horizontalMovement < 0)
+        {
+            _anim.SetBool("MoveRight", false);
+            _anim.SetBool("MoveLeft", true);
+        }
+        else if (_horizontalMovement == 0)
+        {
+            _anim.SetBool("MoveLeft", false);
+            _anim.SetBool("MoveRight", false);
+        }
+    }
+    #endregion
+
     #region Ammo
     public void laser()
     {
@@ -124,7 +138,7 @@ public class Player : NetworkBehaviour
             }
           
         }
-        AudioManager.instance.PlayAudio(_laserClip);
+        SoundManager.instance.PlayAudio(_laserClip);
     }
     void tripleShot()
     {
@@ -141,17 +155,23 @@ public class Player : NetworkBehaviour
             if(_health == 2)
             {
                 _uiManager.UpdateLives(_health);
-                _thrustersPrefabs[0].SetActive(true);
+                _enginePrefabs[0].SetActive(true);
             }
             else if(_health == 1 )
             {
                 _uiManager.UpdateLives(_health);
-                _thrustersPrefabs[1].SetActive(true);
+                _enginePrefabs[1].SetActive(true);
             }
             else if (_health == 0)
             {
+                _anim.SetTrigger("Destroy");
                 _uiManager.UpdateLives(_health);
-                Destroy(gameObject);
+                _uiManager.HighScore();
+                _enginePrefabs[1].SetActive(false);
+                _enginePrefabs[0].SetActive(false);
+                _thrusterPrefab.SetActive(false);
+                Destroy(gameObject,3);
+                GameManager.Singleton._IsGameover = true;
             }
 
         }
@@ -192,14 +212,6 @@ public class Player : NetworkBehaviour
         _speedBoostActive = true;
         yield return new WaitForSeconds(5);
         _speedBoostActive = false;
-    }
-    #endregion
-
-    #region Score
-    public void score(int _points)
-    {
-        _score += _points;
-        _uiManager.UpdateScore(_score);
     }
     #endregion
 

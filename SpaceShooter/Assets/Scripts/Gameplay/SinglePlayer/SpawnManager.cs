@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -25,9 +26,9 @@ public class SpawnManager : MonoBehaviour
         {
             Debug.LogError("Please attach, Player prefab or Enemy Prefab or Enemy Container");
         }
+       
+        Instantiate(_astroidPrefab, new Vector3(Random.Range(-9.1f, 9.8f), Random.Range(1,6), 0), Quaternion.identity);
 
-        Instantiate(_astroidPrefab, new Vector3(0, 0, 4), Quaternion.identity);
-     
     }
     public void startSpawning()
     {
@@ -42,7 +43,7 @@ public class SpawnManager : MonoBehaviour
         {
             playeralive = false;
         }
-
+        
        
     }
     IEnumerator SpawnEnemyRoutine()
@@ -69,5 +70,4 @@ public class SpawnManager : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(20, 30));
         }
     }
-    
 }

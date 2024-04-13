@@ -35,10 +35,10 @@ public class Asteroid : MonoBehaviour
         {
 
             Instantiate(_explodeAnimPrefab, transform.position, Quaternion.identity);
-            AudioManager.instance.PlayAudio(_explosionClip);
+            SoundManager.instance.PlayAudio(_explosionClip);
             _col.enabled = false;
-            Destroy(collision.gameObject);
             _spawnManager.startSpawning();
+            Destroy(collision.gameObject);
             Destroy(gameObject,0.25f);
            
         }

@@ -28,7 +28,7 @@ public class PowerUpsCo_op : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            AudioManager.instance.PlayAudio(_powerUpClip);
+            SoundManager.instance.PlayAudio(_powerUpClip);
             Destroy(gameObject);
         }
     }

@@ -6,7 +6,6 @@ public class EnemyLaser : MonoBehaviour
 {
     [SerializeField] private float _speed;
     private Player _player;
-    private Enemy _enemy;
     
 
     private void Start()
@@ -17,7 +16,11 @@ public class EnemyLaser : MonoBehaviour
         }
         catch
         {
-            Debug.LogError("Player not found");
+            if (!GameManager.Singleton._IsGameover)
+            {
+                Debug.LogError("Player not found");
+            }
+            
         }
        
         

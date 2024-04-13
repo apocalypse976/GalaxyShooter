@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _MinX, _MaxX;
     [SerializeField] private AudioClip _destroyClip;
     [SerializeField] private GameObject _laserPrefab;
+    private UIManager _uIManager;
     private float _canFire=0, _firerate=2f;
     private Collider2D _boxCollider;
     private Animator _anim;
@@ -24,12 +25,17 @@ public class Enemy : MonoBehaviour
         try
         {
             _player = GameObject.FindWithTag("Player").GetComponent<Player>();
+            _uIManager= GameObject.FindWithTag("UIManager").GetComponent<UIManager>(); 
             _anim = GetComponent<Animator>();
             _boxCollider= GetComponent<Collider2D>();
         }
         catch
         {
-            UnityEngine.Debug.LogError("Didnot found Player");
+            if (!GameManager.Singleton._IsGameover)
+            {
+                UnityEngine.Debug.LogError("Game Obj didnot Found");
+            }
+           
         }
         
         transform.position= new Vector3(Random.Range(-8.5f,8.8f),8,0);
@@ -67,14 +73,14 @@ public class Enemy : MonoBehaviour
             _boxCollider.enabled= false;
             _anim.SetTrigger("Destroy");
             Destroy(other.gameObject);
-            AudioManager.instance.PlayAudio(_destroyClip);
-            _player.score(Random.Range(10,20));
+            SoundManager.instance.PlayAudio(_destroyClip);
+            _uIManager.UpdateScore();
             Destroy(gameObject,2.8f);
         }
         else if(other.tag == "Player")
         {
             _anim.SetTrigger("Destroy");
-            AudioManager.instance.PlayAudio(_destroyClip);
+            SoundManager.instance.PlayAudio(_destroyClip);
             _boxCollider.enabled = false;
             Destroy(gameObject,2.8f);
             if(_player != null)
