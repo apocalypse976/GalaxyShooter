@@ -9,7 +9,6 @@ public class gamemanager : NetworkBehaviour
     [SerializeField] private GameObject _joyStick;
     [SerializeField] private GameObject _shootButton;
     [SerializeField] private GameObject _serverButton;
-   [SerializeField] private bool _isConsole;
     public static gamemanager Singleton;
     private CO_OP_player _player;
 
@@ -73,13 +72,11 @@ public class gamemanager : NetworkBehaviour
         {
             _joyStick.gameObject.SetActive(true);
             _shootButton.gameObject.SetActive(true);
-            _isConsole = false;
         }
         else if (SystemInfo.deviceType == DeviceType.Desktop)
         {
             _joyStick.gameObject.SetActive(false);
             _shootButton.gameObject.SetActive(false);
-            _isConsole = true;
            
         }
     }

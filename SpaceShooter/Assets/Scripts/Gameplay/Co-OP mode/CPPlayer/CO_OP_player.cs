@@ -2,7 +2,6 @@ using Unity.Netcode;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class CO_OP_player : NetworkBehaviour
 {
